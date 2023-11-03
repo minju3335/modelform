@@ -56,8 +56,9 @@ def create(request):
         'form':form,
     }
 
-    # 4. create.html을 랜더링
-    return render(request, 'create.html', context)
+    # 4. form.html을 랜더링
+    # 9. form.html을 랜더링
+    return render(request, 'form.html', context)
 
 
 
@@ -69,7 +70,7 @@ def delete (request, id):
 
 
 def update(request, id):
-    # 밑에 둘 다 쓰고 있으니 위로 빼준다
+    # 밑에 둘다(if, else) 쓰고 있으니 위로 빼준다
     article = Article.objects.get(id=id)
 
     if request.method == 'POST':
@@ -83,4 +84,4 @@ def update(request, id):
     context = {
         'form':form,
     }
-    return render(request, 'update.html', context)
+    return render(request, 'form.html', context)

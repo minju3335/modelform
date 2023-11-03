@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    {% if request.resolver_match.url_name == 'update' %}
+        <h1>게시물 수정</h1>
+    {% else %}
+        <h1>게시물 생성</h1>
+    {% endif %}
+
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
