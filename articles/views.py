@@ -21,28 +21,40 @@ def create(request):
     # GET create/ => 빈 종이를 보여주는 기능
     # POST create/ => 사용자가 입력한 데이터를 저장
     
-    
+    # 모든 경우의 수
+    # 1. GET : form을 만들어서 html 문서를 사용자에게 리턴
+    #               => 1~4 
+    # 2. POST invalid data : 데이터 검증에 실패하는 경우
+    # => 검증에 성공한 데이터만 가지고 form을 만들어서 html 문서를 사용자에게 리턴
+    # 3. POST valid data (데이터 검증에 성공하는 경우)
+    # => DB에 데이터 저장 후 index 페이지로 redirect
+
+    # =========
+    # 5. POST요청 (데이터가 잘못 들어온 경우)
+    # 10. POSt요청 (데이터가 잘 들어온 경우)
     if request.method == 'POST':
+        # 6. form에 사용자가 입력한(잘못된) 정보를 담아서 form을 생성
+        # 11. 사용자가 입력한 정보를 담아서 form을 생성
         form = ArticleForm(request.POST)
 
+        # 7. form을 검증 (실패)
+        # 12. form을 검증(성공)
         if form.is_valid():
+            # 13. form을 저장
             article = form.save()
+            # 14. index페이지로 redirect
             return redirect('articles:index')
-        else:
-            form = ArticleForm()
-
-            context = {
-            'form':form,
-        }
-
-        return render(request, 'create.html', context)
-            
-
+    
+    # 1. GET 요청
     else:
+        # 2. 비어있는 form을 만들어서
         form = ArticleForm()
 
-        context = {
-            'form':form,
-        }
+    # 3. context dict에 담고
+    # 8. 검증에 실패한 form을 context dict에 담고
+    context = {
+        'form':form,
+    }
 
-        return render(request, 'create.html', context)
+    # 4. create.html을 랜더링
+    return render(request, 'create.html', context)
