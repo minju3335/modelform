@@ -58,3 +58,29 @@ def create(request):
 
     # 4. create.html을 랜더링
     return render(request, 'create.html', context)
+
+
+
+def delete (request, id):
+    article = Article.objects.get(id=id)
+    article.delete()
+
+    return redirect('articles:index')
+
+
+def update(request, id):
+    # 밑에 둘 다 쓰고 있으니 위로 빼준다
+    article = Article.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:index')
+    else:
+        form = ArticleForm(instance=article)
+
+    context = {
+        'form':form,
+    }
+    return render(request, 'update.html', context)
